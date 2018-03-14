@@ -1,8 +1,9 @@
-#include <stdio.h>
+#include "fatal.h"
+#include "list.h"
 
 struct Node
 {
-    int Element;
+    ElementType Element;
     Position Next;
 };
 
@@ -22,31 +23,31 @@ int IsLast(Position P, const List L)
     return P->Next == NULL;
 }
 
-Position Find(int X, List L)
+Position Find(ElementType X, List L)
 {
-    Posirion P;
+    Position P;
     P = L->Next;
-    While(P != NULL && P->Element != X) {
+    while(P != NULL && P->Element != X) {
         P = P->Next;
     }
     return P;
 }
 
 
-Position FindPrevious(int X, List L)
+Position FindPrevious(ElementType X, List L)
 {
-    Posirion P;
+    Position P;
     P = L->Next;
-    While(P->Next != NULL && P->Next->Element != X) {
+    while(P->Next != NULL && P->Next->Element != X) {
         P = P->Next;
     }
     return P;
 }
 
-void Delete(int X, List L)
+void Delete(ElementType X, List L)
 {
     Position P, TmpCell;
-    P = FindPreVious(int X, List L);
+    P = FindPrevious(X, L);
     if (!IsLast(P, L)) {
         TmpCell = P->Next;
         P->Next = TmpCell->Next;
@@ -54,6 +55,19 @@ void Delete(int X, List L)
     } 
 }
 
+void Insert(ElementType X, List L, Position P)
+{
+    Position TmpCell;
+    TmpCell = malloc(sizeof(struct Node));
+    if(TmpCell == NULL)
+        FatalError("Out of space!!");
+
+    TmpCell->Element = X;
+    TmpCell->Next = P->Next;
+    P->Next = TmpCell;
+}
+
 int main()
 {
+
 }
