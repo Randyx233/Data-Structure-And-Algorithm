@@ -1,5 +1,6 @@
 #include "fatal.h"
 #include "list.h"
+#include <stdlib.h>
 
 struct Node
 {
@@ -9,6 +10,11 @@ struct Node
 
 List MakeEmpty(List L)
 {
+    if(L != NULL)
+        DeleteList(L);
+    L = malloc(sizeof(struct Node));
+    if(L == NULL)
+        FatalError("Out of memory!");
     L->Next = NULL;
     return L;
 }
@@ -18,7 +24,7 @@ int IsEmpty(List L)
     return L->Next == NULL;
 }
 
-int IsLast(Position P, const List L)
+int IsLast(Position P, List L)
 {
     return P->Next == NULL;
 }
@@ -28,17 +34,6 @@ Position Find(ElementType X, List L)
     Position P;
     P = L->Next;
     while(P != NULL && P->Element != X) {
-        P = P->Next;
-    }
-    return P;
-}
-
-
-Position FindPrevious(ElementType X, List L)
-{
-    Position P;
-    P = L->Next;
-    while(P->Next != NULL && P->Next->Element != X) {
         P = P->Next;
     }
     return P;
@@ -55,6 +50,16 @@ void Delete(ElementType X, List L)
     } 
 }
 
+Position FindPrevious(ElementType X, List L)
+{
+    Position P;
+    P = L;
+    while(P->Next != NULL && P->Next->Element != X) {
+        P = P->Next;
+    }
+    return P;
+}
+
 void Insert(ElementType X, List L, Position P)
 {
     Position TmpCell;
@@ -67,7 +72,34 @@ void Insert(ElementType X, List L, Position P)
     P->Next = TmpCell;
 }
 
-int main()
+void DeleteList(List L)
 {
+    Position P, Tmp;
+    P = L->Next;
+    L->Next = NULL;
+    while(P != NULL) {
+        Tmp = P->Next;
+        free(P);
+        P = Tmp;
+    }
+}
 
+Position Header(List L)
+{
+    return L;
+}
+
+Position First(List L)
+{
+    return L->Next;
+}
+
+Position Advance(Position P)
+{
+    return P->Next;
+}
+
+ElementType Retrieve(Position P)
+{
+    return P->Element;
 }
