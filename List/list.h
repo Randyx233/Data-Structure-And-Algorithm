@@ -1,8 +1,8 @@
-#ifndef _List_H
+typedef int ElementType
 
+#ifndef _List_H
 #define _List_H
 
-#define ElementType int
 struct Node;
 typedef struct Node *PtrToNode;
 typedef PtrToNode List;
